@@ -1,0 +1,20 @@
+{
+  "maintenance": [
+    {
+      "task": "Change engine oil",
+      "interval": "Every 10-20 hours"
+    },
+    {
+      "task": "Check air filter",
+      "interval": "Every ride in dusty conditions"
+    },
+    {
+      "task": "Inspect valve clearance",
+      "interval": "According to manufacturer schedule"
+    },
+    {
+      "task": "Inspect chain and sprockets",
+      "interval": "Regular inspection"
+    }
+  ]
+}
