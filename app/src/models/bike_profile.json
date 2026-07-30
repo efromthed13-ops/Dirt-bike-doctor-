@@ -1,0 +1,9 @@
+{
+  "bike": {
+    "brand": "",
+    "model": "",
+    "year": "",
+    "engine_size": "",
+    "notes": []
+  }
+}
