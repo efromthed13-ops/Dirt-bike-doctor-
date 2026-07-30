@@ -1,0 +1,20 @@
+{
+  "categories": [
+    {
+      "name": "Won't Start",
+      "checks": ["Fuel", "Spark", "Compression", "Timing"]
+    },
+    {
+      "name": "No Spark",
+      "checks": ["Spark Plug", "Coil", "Wiring", "CDI/Ignition"]
+    },
+    {
+      "name": "Low Compression",
+      "checks": ["Valve Clearance", "Piston", "Rings", "Cylinder"]
+    },
+    {
+      "name": "Overheating",
+      "checks": ["Coolant", "Radiator", "Air Flow", "Mixture"]
+    }
+  ]
+}
