@@ -1,0 +1,12 @@
+{
+  "navigation": [
+    {
+      "screen": "Home",
+      "routes": ["Diagnostic Search", "Garage", "Maintenance"]
+    },
+    {
+      "screen": "Diagnostic Search",
+      "routes": ["Repair Guide"]
+    }
+  ]
+}
