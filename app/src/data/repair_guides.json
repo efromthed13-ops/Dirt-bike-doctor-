@@ -1,0 +1,24 @@
+{
+  "guides": [
+    {
+      "title": "No Spark Check",
+      "category": "Electrical",
+      "steps": [
+        "Inspect spark plug",
+        "Test ignition coil",
+        "Check wiring connections",
+        "Inspect CDI/ignition system"
+      ]
+    },
+    {
+      "title": "Bike Will Not Start",
+      "category": "Engine",
+      "steps": [
+        "Check fuel supply",
+        "Verify spark",
+        "Check compression",
+        "Inspect timing"
+      ]
+    }
+  ]
+}
