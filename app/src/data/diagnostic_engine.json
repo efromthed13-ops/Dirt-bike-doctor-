@@ -1,0 +1,22 @@
+{
+  "rules": [
+    {
+      "symptom": "Won't start",
+      "questions": [
+        "Does it have spark?",
+        "Is fuel reaching the engine?",
+        "Does it have compression?"
+      ],
+      "next_steps": "Check ignition, fuel system, compression, and timing."
+    },
+    {
+      "symptom": "No power",
+      "questions": [
+        "Is the air filter clean?",
+        "Is fuel mixture correct?",
+        "Is compression healthy?"
+      ],
+      "next_steps": "Inspect intake, fuel, and engine condition."
+    }
+  ]
+}
