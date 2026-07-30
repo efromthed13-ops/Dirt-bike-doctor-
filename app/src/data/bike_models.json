@@ -1,0 +1,8 @@
+{
+  "models": {
+    "Honda": ["CRF250R", "CRF450R", "CRF250X"],
+    "Yamaha": ["YZ250F", "YZ450F", "WR250F"],
+    "Kawasaki": ["KX250", "KX450"],
+    "KTM": ["250 SX-F", "350 SX-F", "450 SX-F"]
+  }
+}
