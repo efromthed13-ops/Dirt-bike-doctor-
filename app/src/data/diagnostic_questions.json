@@ -1,0 +1,21 @@
+{
+  "questions": [
+    {
+      "symptom": "Won't start",
+      "questions": [
+        "Does it have spark?",
+        "Is fuel getting to the engine?",
+        "Does it have compression?",
+        "Did it fail suddenly?"
+      ]
+    },
+    {
+      "symptom": "Runs rough",
+      "questions": [
+        "Does it idle?",
+        "Does it bog under throttle?",
+        "Is the air filter clean?"
+      ]
+    }
+  ]
+}
