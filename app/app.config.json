@@ -1,0 +1,11 @@
+{
+  "name": "Dirt Bike Doctor",
+  "version": "0.1.0",
+  "platforms": ["Android", "iOS"],
+  "features": [
+    "Diagnostics",
+    "Repair Guides",
+    "Garage",
+    "Maintenance Tracker"
+  ]
+}
