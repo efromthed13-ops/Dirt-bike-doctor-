@@ -1,0 +1,17 @@
+{
+  "name": "dirt-bike-doctor-app",
+  "version": "0.1.0",
+  "description": "Dirt Bike Doctor mobile repair assistant",
+  "private": true,
+  "scripts": {
+    "start": "Start mobile development server",
+    "android": "Build Android app",
+    "ios": "Build iPhone app"
+  },
+  "features": [
+    "diagnostics",
+    "garage",
+    "maintenance",
+    "repair-guides"
+  ]
+}
