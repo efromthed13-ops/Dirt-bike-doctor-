@@ -1,0 +1,16 @@
+{
+  "symptoms": [
+    {
+      "problem": "Engine cranks but will not start",
+      "possible_causes": ["No fuel", "No spark", "Low compression", "Incorrect timing"]
+    },
+    {
+      "problem": "Engine dies when hot",
+      "possible_causes": ["Fuel issue", "Ignition coil failure", "Valve clearance", "Overheating"]
+    },
+    {
+      "problem": "Back wheel locks while in gear",
+      "possible_causes": ["Transmission issue", "Engine seizure", "Clutch problem"]
+    }
+  ]
+}
