@@ -1,0 +1,8 @@
+{
+  "keywords": {
+    "won't start": ["fuel", "spark", "compression", "timing"],
+    "no spark": ["plug", "coil", "wiring", "cdi"],
+    "overheating": ["coolant", "radiator", "mixture"],
+    "low power": ["air filter", "fuel", "compression"]
+  }
+}
