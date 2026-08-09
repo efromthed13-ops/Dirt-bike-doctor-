@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Dirt Bike Doctor",
+    "slug": "dirt-bike-doctor",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0b0b0b"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.dirtbikedoctor.app"
+    },
+    "android": {
+      "package": "com.dirtbikedoctor.app"
+    }
+  }
+}
