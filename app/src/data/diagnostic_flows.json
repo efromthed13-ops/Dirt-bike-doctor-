@@ -1,0 +1,23 @@
+{
+  "flows": [
+    {
+      "id": "wont-start",
+      "title": "Bike Won't Start",
+      "steps": [
+        {"id":"turns-over","question":"Does the engine turn over?","yes":"spark","no":"mechanical-lock"},
+        {"id":"spark","question":"Do you have a strong spark at the plug?","yes":"fuel","no":"ignition"},
+        {"id":"fuel","question":"Is fuel reaching the engine?","yes":"compression","no":"fuel-system"},
+        {"id":"compression","question":"Does the engine have normal compression?","yes":"timing","no":"compression-fault"},
+        {"id":"timing","question":"Did the problem happen suddenly or did the kickstarter become unusually easy?","yes":"timing-check","no":"general-check"}
+      ],
+      "results": {
+        "mechanical-lock":"Check for a seized engine, transmission lock-up, starter mechanism, or other mechanical obstruction before continuing.",
+        "ignition":"Inspect the spark plug, cap, ignition coil, wiring, grounds, kill switch, stator/pickup, and ignition system.",
+        "fuel-system":"Check fuel valve, fuel line, filter, carburetor/injector, float system, and fuel delivery.",
+        "compression-fault":"Check valve clearance, valve sealing, cam timing, decompressor system, piston, rings, and head gasket.",
+        "timing-check":"Stop repeated starting attempts and verify cam timing, timing-chain condition/tension, and crank timing before replacing parts.",
+        "general-check":"Verify spark, fuel, compression, air supply, and ignition timing systematically before replacing components."
+      }
+    }
+  ]
+}
