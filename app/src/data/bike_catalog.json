@@ -1,0 +1,12 @@
+{
+  "brands": [
+    {"name":"Honda","models":["CRF250R","CRF450R","CRF250RX","CRF450RX"]},
+    {"name":"Yamaha","models":["YZ125","YZ250","YZ250F","YZ450F"]},
+    {"name":"Kawasaki","models":["KX112","KX250","KX450"]},
+    {"name":"Suzuki","models":["RM85","RM125","RM250","RM-Z250","RM-Z450"]},
+    {"name":"KTM","models":["125 SX","250 SX","250 SX-F","350 SX-F","450 SX-F"]},
+    {"name":"Husqvarna","models":["TC 125","TC 250","FC 250","FC 350","FC 450"]},
+    {"name":"GasGas","models":["MC 125","MC 250","MC 250F","MC 350F","MC 450F"]},
+    {"name":"Beta","models":["125 RR","200 RR","250 RR","300 RR","350 RR","390 RR","430 RR","480 RR"]}
+  ]
+}
