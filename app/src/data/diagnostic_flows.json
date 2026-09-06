@@ -4,19 +4,128 @@
       "id": "wont-start",
       "title": "Bike Won't Start",
       "steps": [
-        {"id":"turns-over","question":"Does the engine turn over?","yes":"spark","no":"mechanical-lock"},
+        {"id":"turns-over","question":"Does the engine turn over normally?","yes":"spark","no":"mechanical-lock"},
         {"id":"spark","question":"Do you have a strong spark at the plug?","yes":"fuel","no":"ignition"},
         {"id":"fuel","question":"Is fuel reaching the engine?","yes":"compression","no":"fuel-system"},
         {"id":"compression","question":"Does the engine have normal compression?","yes":"timing","no":"compression-fault"},
-        {"id":"timing","question":"Did the problem happen suddenly or did the kickstarter become unusually easy?","yes":"timing-check","no":"general-check"}
+        {"id":"timing","question":"Did it fail suddenly, or did the kickstarter become unusually easy?","yes":"timing-check","no":"general-check"}
       ],
       "results": {
-        "mechanical-lock":"Check for a seized engine, transmission lock-up, starter mechanism, or other mechanical obstruction before continuing.",
-        "ignition":"Inspect the spark plug, cap, ignition coil, wiring, grounds, kill switch, stator/pickup, and ignition system.",
-        "fuel-system":"Check fuel valve, fuel line, filter, carburetor/injector, float system, and fuel delivery.",
-        "compression-fault":"Check valve clearance, valve sealing, cam timing, decompressor system, piston, rings, and head gasket.",
-        "timing-check":"Stop repeated starting attempts and verify cam timing, timing-chain condition/tension, and crank timing before replacing parts.",
-        "general-check":"Verify spark, fuel, compression, air supply, and ignition timing systematically before replacing components."
+        "mechanical-lock":{"title":"Mechanical problem suspected","text":"Stop forcing the engine. Check for a seized engine, transmission lock-up, starter mechanism, or another mechanical obstruction."},
+        "ignition":{"title":"Ignition system suspected","text":"Inspect the plug, cap, coil, wiring, grounds, kill switch, stator/pickup, and ignition system."},
+        "fuel-system":{"title":"Fuel delivery suspected","text":"Check the fuel valve, line, filter, carburetor or injector, float system, and fuel delivery."},
+        "compression-fault":{"title":"Compression problem suspected","text":"Check valve clearance, valve sealing, cam timing, decompressor system, piston, rings, and head gasket."},
+        "timing-check":{"title":"Timing should be checked first","text":"Stop repeated starting attempts and verify cam timing, timing-chain condition/tension, and crank timing before replacing parts."},
+        "general-check":{"title":"Systematic diagnosis recommended","text":"Verify spark, fuel, compression, air supply, and ignition timing systematically before replacing components."}
+      }
+    },
+    {
+      "id": "no-spark",
+      "title": "No Spark",
+      "steps": [
+        {"id":"plug","question":"Is the spark plug clean, correctly gapped, and not damaged?","yes":"ground","no":"plug"},
+        {"id":"ground","question":"Is the plug body properly grounded against the engine while testing for spark?","yes":"kill","no":"ground-check"},
+        {"id":"kill","question":"Is the kill switch and ignition wiring working normally?","yes":"coil","no":"kill-switch"},
+        {"id":"coil","question":"Does the ignition coil and plug cap pass the model's resistance/continuity checks?","yes":"stator","no":"coil"},
+        {"id":"stator","question":"Does the stator/pickup output meet the model-specific service specification?","yes":"wiring","no":"stator"},
+        {"id":"wiring","question":"Are connectors, grounds, and wiring clean and secure?","yes":"ignition-module","no":"wiring"}
+      ],
+      "results": {
+        "plug":{"title":"Spark plug is the first suspect","text":"Replace or correctly gap the plug, then retest spark using the correct procedure for the bike."},
+        "ground-check":{"title":"Correct the spark test","text":"Use a clean metal engine ground and follow the bike's specified spark-testing procedure."},
+        "kill-switch":{"title":"Kill switch/wiring suspected","text":"Inspect the kill-switch circuit, ignition switch, connectors, grounds, and damaged wires."},
+        "coil":{"title":"Ignition coil or cap suspected","text":"Test the coil and plug cap against the service manual specifications before replacement."},
+        "stator":{"title":"Stator/pickup suspected","text":"Test stator and pickup outputs using the model-specific service procedure and specifications."},
+        "wiring":{"title":"Wiring or ground fault suspected","text":"Repair loose, corroded, broken, or damaged wiring and grounds, then retest spark."},
+        "ignition-module":{"title":"Ignition module is a later suspect","text":"If plug, controls, coil, stator/pickup, wiring, and grounds test good, diagnose the ignition control module using the service manual."}
+      }
+    },
+    {
+      "id": "no-fuel",
+      "title": "No Fuel",
+      "steps": [
+        {"id":"fuel-valve","question":"Is there fresh fuel in the tank and is the fuel valve turned on?","yes":"flow","no":"fuel-supply"},
+        {"id":"flow","question":"Does fuel flow normally from the tank through the fuel line?","yes":"carb-injector","no":"line-filter"},
+        {"id":"carb-injector","question":"Is the carburetor bowl filling, or is the injector receiving fuel pressure as specified?","yes":"intake","no":"delivery"},
+        {"id":"intake","question":"Is the intake path clear and is the air filter serviceable?","yes":"mixture","no":"intake-restriction"},
+        {"id":"mixture","question":"Does the bike still fail after confirming fuel and air delivery?","yes":"deeper","no":"general-check"}
+      ],
+      "results": {
+        "fuel-supply":{"title":"Fuel supply problem","text":"Add fresh fuel if needed and verify the fuel valve, tank vent, and fuel supply configuration."},
+        "line-filter":{"title":"Fuel flow restriction","text":"Inspect the fuel line, filter, petcock, tank screen, and tank vent for blockage or restriction."},
+        "delivery":{"title":"Carburetor/injector delivery problem","text":"Check carburetor float/needle operation and passages, or verify injector pressure and operation on fuel-injected models."},
+        "intake-restriction":{"title":"Intake restriction","text":"Clean or replace a blocked air filter and inspect the intake tract for obstructions or damage."},
+        "deeper":{"title":"Fuel/air system needs deeper testing","text":"Confirm fuel pressure or carburetor settings, injector operation, intake leaks, and model-specific mixture controls."},
+        "general-check":{"title":"Fuel and air are likely present","text":"Move to spark, compression, timing, and other system checks instead of replacing fuel-system parts blindly."}
+      }
+    },
+    {
+      "id": "low-compression",
+      "title": "Low Compression",
+      "steps": [
+        {"id":"valves","question":"Are valve clearances within the model-specific specification?","yes":"test","no":"valve-adjust"},
+        {"id":"test","question":"Does a compression test confirm low compression using the correct test procedure?","yes":"leakdown","no":"test-procedure"},
+        {"id":"leakdown","question":"Does a leak-down test show significant leakage past the valves, rings, or head gasket?","yes":"leak-source","no":"timing"},
+        {"id":"timing","question":"Is cam timing correctly aligned with the crank at top dead center?","yes":"engine-wear","no":"cam-timing"}
+      ],
+      "results": {
+        "valve-adjust":{"title":"Valve clearance problem","text":"Correct valve clearance to the exact model specification, then repeat the compression test."},
+        "test-procedure":{"title":"Verify the compression test","text":"Repeat the test with the correct gauge, throttle position, decompressor procedure, and model-specific method."},
+        "leak-source":{"title":"Internal sealing problem suspected","text":"Use leak-down results to identify valve leakage, ring/cylinder leakage, or a head-gasket sealing problem."},
+        "cam-timing":{"title":"Cam timing problem","text":"Stop running the engine and verify cam timing, timing-chain condition/tension, and crank timing before further testing."},
+        "engine-wear":{"title":"Engine wear is possible","text":"Inspect piston, rings, cylinder condition, valve sealing, and decompressor operation according to the service manual."}
+      }
+    },
+    {
+      "id": "overheating",
+      "title": "Overheating",
+      "steps": [
+        {"id":"coolant","question":"Is the coolant level correct and is there no obvious coolant leak?","yes":"radiator","no":"coolant"},
+        {"id":"radiator","question":"Are the radiator fins clear and is coolant able to circulate?","yes":"fan","no":"radiator"},
+        {"id":"fan","question":"Does the cooling fan operate when the bike reaches the specified temperature?","yes":"mixture","no":"fan"},
+        {"id":"mixture","question":"Is the fuel mixture/engine tune correct for the bike and conditions?","yes":"pump","no":"tune"},
+        {"id":"pump","question":"Does the water pump and thermostat system operate according to the service procedure?","yes":"timing","no":"cooling-system"}
+      ],
+      "results": {
+        "coolant":{"title":"Coolant level/leak problem","text":"Let the engine cool completely, then inspect coolant level, hoses, radiator, water pump area, and leaks. Never open a hot cooling system."},
+        "radiator":{"title":"Radiator airflow/circulation problem","text":"Clean blocked fins carefully and diagnose restricted coolant circulation before riding again."},
+        "fan":{"title":"Cooling fan problem","text":"Check the fan, fuse, relay, temperature switch/sensor, wiring, and power supply using the service procedure."},
+        "tune":{"title":"Engine tuning problem","text":"Verify jetting or fuel-injection settings, intake leaks, exhaust condition, and model-specific tuning requirements."},
+        "cooling-system":{"title":"Cooling-system component problem","text":"Inspect the water pump, thermostat, hoses, radiator cap, and circulation system according to the service manual."},
+        "timing":{"title":"Check timing and engine condition","text":"If the cooling system is operating correctly, verify ignition/cam timing and inspect for engine-condition problems that can create excess heat."}
+      }
+    },
+    {
+      "id": "backfiring",
+      "title": "Backfiring",
+      "steps": [
+        {"id":"intake","question":"Does it backfire mainly through the intake when opening the throttle?","yes":"lean","no":"exhaust"},
+        {"id":"lean","question":"Are there signs of a lean condition or an intake air leak?","yes":"intake-leak","no":"timing"},
+        {"id":"exhaust","question":"Does it backfire mainly through the exhaust during deceleration?","yes":"exhaust-leak","no":"timing"},
+        {"id":"timing","question":"Are ignition and cam timing confirmed to be correct?","yes":"fuel-ignition","no":"timing-check"}
+      ],
+      "results": {
+        "intake-leak":{"title":"Intake leak/lean condition suspected","text":"Inspect intake boots, carburetor mounting, injector seals, vacuum lines, and fuel/air settings."},
+        "exhaust-leak":{"title":"Exhaust leak suspected","text":"Inspect exhaust joints, gaskets, and cracks for air entering the exhaust system."},
+        "timing-check":{"title":"Timing problem suspected","text":"Verify ignition timing and cam timing against the model-specific service procedure before replacing parts."},
+        "fuel-ignition":{"title":"Fuel or ignition system needs testing","text":"Check mixture/fueling, spark quality, plug condition, and ignition timing systematically."}
+      }
+    },
+    {
+      "id": "strange-noise",
+      "title": "Strange Noise",
+      "steps": [
+        {"id":"stop","question":"Is the noise loud, metallic, rapidly worsening, or accompanied by loss of oil pressure/power?","yes":"stop-engine","no":"location"},
+        {"id":"location","question":"Can you identify whether the noise is from the top end, bottom end, clutch, or transmission area?","yes":"area","no":"inspection"},
+        {"id":"area","question":"Is the noise clearly from the top end/valve-cover area?","yes":"top-end","no":"bottom-end"},
+        {"id":"inspection","question":"Does the noise change with engine RPM or when the clutch is operated?","yes":"isolate","no":"external"}
+      ],
+      "results": {
+        "stop-engine":{"title":"Stop running the engine","text":"Do not continue riding. Inspect oil level, engine condition, timing components, and other possible mechanical failures before restarting."},
+        "top-end":{"title":"Top-end inspection recommended","text":"Inspect valve clearance, camshaft, cam-chain/tensioner, decompressor, rocker/follower components, and lubrication."},
+        "bottom-end":{"title":"Bottom-end inspection recommended","text":"Inspect oil level/condition and diagnose crankshaft, rod, bearing, piston, and transmission components as appropriate."},
+        "isolate":{"title":"Isolate the noise source","text":"Compare the noise with engine RPM and clutch operation, then inspect the affected system using the service manual."},
+        "external":{"title":"Inspect external components","text":"Check skid plate, exhaust, chain, sprockets, mounts, guards, and other loose components that can create noise."}
       }
     }
   ]
