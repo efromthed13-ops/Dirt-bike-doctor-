@@ -8,76 +8,84 @@ import repairGuides from './app/src/data/repair_guides.json';
 import symptomSearch from './app/src/diagnostics/symptom_search.json';
 
 const symptoms = [
-  "Won’t Start",
-  'No Spark',
-  'No Fuel',
-  'Low Compression',
-  'Overheating',
-  'Backfiring',
-  'Strange Noise',
+  "Won’t Start", 'No Spark', 'No Fuel', 'Low Compression',
+  'Overheating', 'Backfiring', 'Strange Noise',
 ];
 
-const wontStartFlow = diagnosticFlows.flows.find(flow => flow.id === 'wont-start');
+const symptomFlowIds = {
+  "Won’t Start": 'wont-start',
+  'No Spark': 'no-spark',
+  'No Fuel': 'no-fuel',
+  'Low Compression': 'low-compression',
+  'Overheating': 'overheating',
+  'Backfiring': 'backfiring',
+  'Strange Noise': 'strange-noise',
+};
 
 export default function App() {
   const [screen, setScreen] = useState('home');
   const [brand, setBrand] = useState(null);
   const [model, setModel] = useState(null);
   const [symptom, setSymptom] = useState(null);
-  const [step, setStep] = useState(0);
+  const [stepId, setStepId] = useState(null);
+  const [history, setHistory] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [resultKey, setResultKey] = useState(null);
   const [guide, setGuide] = useState(null);
 
   const bikeTitle = useMemo(() => brand && model ? `${brand} ${model}` : 'My Bike', [brand, model]);
   const selectedBrand = bikeCatalog.brands.find(item => item.name === brand);
+  const flow = diagnosticFlows.flows.find(item => item.id === symptomFlowIds[symptom]);
+  const currentQuestion = flow?.steps?.find(item => item.id === stepId);
+  const result = resultKey ? flow?.results?.[resultKey] : null;
 
   const chooseSymptom = value => {
+    const flowId = symptomFlowIds[value];
+    const selectedFlow = diagnosticFlows.flows.find(item => item.id === flowId);
     setSymptom(value);
-    setStep(0);
+    setHistory([]);
     setAnswers([]);
     setResultKey(null);
-    setScreen('diagnose');
+    setStepId(selectedFlow?.steps?.[0]?.id || null);
+    setScreen(selectedFlow ? 'diagnose' : 'symptoms');
   };
 
   const answer = value => {
-    const current = wontStartFlow?.steps?.[step];
-    const nextAnswers = [...answers, value];
-    setAnswers(nextAnswers);
+    if (!currentQuestion || !flow) return;
+    const next = currentQuestion[value];
+    setAnswers(prev => [...prev, { step: currentQuestion.id, answer: value }]);
 
-    if (!current) return;
-
-    const next = current[value];
-    if (next && wontStartFlow.steps.some(item => item.id === next)) {
-      setStep(wontStartFlow.steps.findIndex(item => item.id === next));
+    if (next && flow.steps.some(item => item.id === next)) {
+      setHistory(prev => [...prev, currentQuestion.id]);
+      setStepId(next);
       return;
     }
 
-    setResultKey(next || 'general-check');
+    setResultKey(next || Object.keys(flow.results || {})[0]);
     setScreen('result');
   };
 
-  const reset = () => {
-    setScreen('home');
-    setSymptom(null);
-    setStep(0);
-    setAnswers([]);
-    setResultKey(null);
-    setGuide(null);
+  const goBack = () => {
+    if (history.length) {
+      const previous = history[history.length - 1];
+      setHistory(prev => prev.slice(0, -1));
+      setStepId(previous);
+      return;
+    }
+    setScreen('symptoms');
   };
 
-  const currentQuestion = wontStartFlow?.steps?.[step];
-  const diagnosisText = resultKey ? wontStartFlow?.results?.[resultKey] : '';
+  const reset = () => {
+    setScreen('home'); setSymptom(null); setStepId(null); setHistory([]);
+    setAnswers([]); setResultKey(null); setGuide(null);
+  };
 
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar style="light" />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
-          <View>
-            <Text style={styles.brandText}>DIRT BIKE DOCTOR</Text>
-            <Text style={styles.tagline}>Diagnose. Repair. Ride.</Text>
-          </View>
+          <View><Text style={styles.brandText}>DIRT BIKE DOCTOR</Text><Text style={styles.tagline}>Diagnose. Repair. Ride.</Text></View>
           <Text style={styles.cross}>✚</Text>
         </View>
 
@@ -85,9 +93,7 @@ export default function App() {
           <View style={styles.hero}>
             <Text style={styles.heroTitle}>What’s wrong with your bike?</Text>
             <Text style={styles.muted}>Pick a symptom and we’ll walk you through the checks.</Text>
-            <TouchableOpacity style={styles.primary} onPress={() => setScreen('symptoms')}>
-              <Text style={styles.primaryText}>START DIAGNOSIS</Text>
-            </TouchableOpacity>
+            <TouchableOpacity style={styles.primary} onPress={() => setScreen('symptoms')}><Text style={styles.primaryText}>START DIAGNOSIS</Text></TouchableOpacity>
           </View>
           <Section title="My Bike" />
           <TouchableOpacity style={styles.card} onPress={() => setScreen('brands')}>
@@ -96,9 +102,7 @@ export default function App() {
           </TouchableOpacity>
           <Section title="Quick Diagnosis" />
           <View style={styles.grid}>{symptoms.slice(0, 4).map(s => <Tile key={s} label={s} onPress={() => chooseSymptom(s)} />)}</View>
-          <TouchableOpacity style={styles.secondary} onPress={() => setScreen('guides')}>
-            <Text style={styles.secondaryText}>REPAIR GUIDES</Text>
-          </TouchableOpacity>
+          <TouchableOpacity style={styles.secondary} onPress={() => setScreen('guides')}><Text style={styles.secondaryText}>REPAIR GUIDES</Text></TouchableOpacity>
         </>}
 
         {screen === 'symptoms' && <>
@@ -122,30 +126,31 @@ export default function App() {
         {screen === 'diagnose' && currentQuestion && <>
           <Text style={styles.kicker}>{symptom}</Text>
           <Text style={styles.question}>{currentQuestion.question}</Text>
-          <Text style={styles.progress}>CHECK {step + 1} OF {wontStartFlow.steps.length}</Text>
+          <Text style={styles.progress}>CHECK {history.length + 1}</Text>
           <TouchableOpacity style={styles.answer} onPress={() => answer('yes')}><Text style={styles.answerText}>YES</Text></TouchableOpacity>
           <TouchableOpacity style={styles.answer} onPress={() => answer('no')}><Text style={styles.answerText}>NO</Text></TouchableOpacity>
-          <Back onPress={() => step > 0 ? setStep(step - 1) : setScreen('symptoms')} />
+          <Back onPress={goBack} />
         </>}
 
         {screen === 'result' && <>
           <Text style={styles.kicker}>DIAGNOSIS</Text>
-          <Text style={styles.question}>{symptom}</Text>
+          <Text style={styles.question}>{result?.title || symptom}</Text>
           <View style={styles.result}>
             <Text style={styles.resultTitle}>Recommended next step</Text>
-            <Text style={styles.muted}>{diagnosisText || 'Verify spark, fuel, compression, air supply, and ignition timing systematically before replacing components.'}</Text>
+            <Text style={styles.muted}>{result?.text || 'Verify the related system using the model-specific service procedure before replacing parts.'}</Text>
             {brand && model && <Text style={styles.resultBullet}>• Bike: {brand} {model}</Text>}
-            <Text style={styles.resultBullet}>• Follow the model-specific service procedure.</Text>
-            <Text style={styles.resultBullet}>• Do not replace parts until the failed system is confirmed.</Text>
+            <Text style={styles.resultBullet}>• Use model-specific specifications and service limits.</Text>
+            <Text style={styles.resultBullet}>• Confirm the failed system before replacing components.</Text>
           </View>
           <TouchableOpacity style={styles.primary} onPress={() => setScreen('guides')}><Text style={styles.primaryText}>VIEW REPAIR GUIDES</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.secondary} onPress={() => chooseSymptom(symptom)}><Text style={styles.secondaryText}>RUN DIAGNOSIS AGAIN</Text></TouchableOpacity>
           <Back onPress={reset} />
         </>}
 
         {screen === 'guides' && <>
           <Section title="Repair Guides" />
           {repairGuides.guides.map(g => <ListItem key={g.title} label={g.title} sub={g.category} onPress={() => { setGuide(g); setScreen('guide'); }} />)}
-          {symptomSearch.symptoms.map(item => <ListItem key={item.problem} label={item.problem} sub={`Possible causes: ${item.possible_causes.join(', ')}`} onPress={() => chooseSymptom('Search: ' + item.problem)} />)}
+          {symptomSearch.symptoms.map(item => <ListItem key={item.problem} label={item.problem} sub={`Possible causes: ${item.possible_causes.join(', ')}`} onPress={() => setScreen('symptoms')} />)}
           <Back onPress={reset} />
         </>}
 
@@ -170,4 +175,4 @@ function ListItem({ label, sub, onPress }) { return <TouchableOpacity style={sty
 function Back({ onPress }) { return <TouchableOpacity style={styles.back} onPress={onPress}><Text style={styles.muted}>‹ Back</Text></TouchableOpacity>; }
 
 const styles = StyleSheet.create({
-  safe:{flex:1,backgroundColor:'#090909'},container:{padding:20,paddingBottom:48},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:28},brandText:{color:'#fff',fontSize:19,fontWeight:'900',letterSpacing:1.4},tagline:{color:'#a0a0a0',marginTop:3},cross:{color:'#e21d2f',fontSize:30,fontWeight:'900'},hero:{backgroundColor:'#151515',borderRadius:18,padding:22,marginBottom:24,borderWidth:1,borderColor:'#292929'},heroTitle:{color:'#fff',fontSize:27,fontWeight:'900',lineHeight:32,marginBottom:10},muted:{color:'#a6a6a6',fontSize:14,lineHeight:21},primary:{backgroundColor:'#e21d2f',borderRadius:12,padding:16,alignItems:'center',marginTop:20},primaryText:{color:'#fff',fontWeight:'900',letterSpacing:1},secondary:{borderColor:'#444',borderWidth:1,borderRadius:12,padding:16,alignItems:'center',marginTop:22},secondaryText:{color:'#fff',fontWeight:'800',letterSpacing:1},section:{color:'#fff',fontSize:19,fontWeight:'800',marginBottom:12,marginTop:6},card:{backgroundColor:'#151515',padding:18,borderRadius:14,marginBottom:24},cardTitle:{color:'#fff',fontSize:17,fontWeight:'800',marginBottom:4},grid:{flexDirection:'row',flexWrap:'wrap',gap:10},tile:{width:'48%',backgroundColor:'#151515',padding:18,borderRadius:14,minHeight:70,justifyContent:'center'},tileText:{color:'#fff',fontWeight:'700'},listItem:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#151515',padding:18,borderRadius:13,marginBottom:10},listText:{color:'#fff',fontSize:16,fontWeight:'700'},sub:{color:'#888',marginTop:4,lineHeight:18},arrow:{color:'#e21d2f',fontSize:28},kicker:{color:'#e21d2f',fontSize:13,fontWeight:'900',letterSpacing:1.2,marginTop:10},question:{color:'#fff',fontSize:28,lineHeight:34,fontWeight:'900',marginTop:8,marginBottom:12},progress:{color:'#777',fontSize:12,fontWeight:'800',marginBottom:24},answer:{backgroundColor:'#151515',borderWidth:1,borderColor:'#333',borderRadius:14,padding:20,marginBottom:12,alignItems:'center'},answerText:{color:'#fff',fontWeight:'900',letterSpacing:1},result:{backgroundColor:'#151515',borderRadius:16,padding:20,marginVertical:14},resultTitle:{color:'#fff',fontSize:20,fontWeight:'900',marginBottom:8},resultBullet:{color:'#ddd',marginTop:12},back:{paddingVertical:20,alignItems:'center'}});
+  safe:{flex:1,backgroundColor:'#090909'},container:{padding:20,paddingBottom:48},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:28},brandText:{color:'#fff',fontSize:19,fontWeight:'900',letterSpacing:1.4},tagline:{color:'#a0a0a0',marginTop:3},cross:{color:'#e21d2f',fontSize:30,fontWeight:'900'},hero:{backgroundColor:'#151515',borderRadius:18,padding:22,marginBottom:24,borderWidth:1,borderColor:'#292929'},heroTitle:{color:'#fff',fontSize:27,fontWeight:'900',lineHeight:32,marginBottom:10},muted:{color:'#a6a6a6',fontSize:14,lineHeight:21},primary:{backgroundColor:'#e21d2f',borderRadius:12,padding:16,alignItems:'center',marginTop:20},primaryText:{color:'#fff',fontWeight:'900',letterSpacing:1},secondary:{borderColor:'#444',borderWidth:1,borderRadius:12,padding:16,alignItems:'center',marginTop:12},secondaryText:{color:'#fff',fontWeight:'800',letterSpacing:1},section:{color:'#fff',fontSize:19,fontWeight:'800',marginBottom:12,marginTop:6},card:{backgroundColor:'#151515',padding:18,borderRadius:14,marginBottom:24},cardTitle:{color:'#fff',fontSize:17,fontWeight:'800',marginBottom:4},grid:{flexDirection:'row',flexWrap:'wrap',gap:10},tile:{width:'48%',backgroundColor:'#151515',padding:18,borderRadius:14,minHeight:70,justifyContent:'center'},tileText:{color:'#fff',fontWeight:'700'},listItem:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#151515',padding:18,borderRadius:13,marginBottom:10},listText:{color:'#fff',fontSize:16,fontWeight:'700'},sub:{color:'#888',marginTop:4,lineHeight:18},arrow:{color:'#e21d2f',fontSize:28},kicker:{color:'#e21d2f',fontSize:13,fontWeight:'900',letterSpacing:1.2,marginTop:10},question:{color:'#fff',fontSize:28,lineHeight:34,fontWeight:'900',marginTop:8,marginBottom:12},progress:{color:'#777',fontSize:12,fontWeight:'800',marginBottom:24},answer:{backgroundColor:'#151515',borderWidth:1,borderColor:'#333',borderRadius:14,padding:20,marginBottom:12,alignItems:'center'},answerText:{color:'#fff',fontWeight:'900',letterSpacing:1},result:{backgroundColor:'#151515',borderRadius:16,padding:20,marginVertical:14},resultTitle:{color:'#fff',fontSize:20,fontWeight:'900',marginBottom:8},resultBullet:{color:'#ddd',marginTop:12},back:{paddingVertical:20,alignItems:'center'}});
