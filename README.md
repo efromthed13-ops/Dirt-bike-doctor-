@@ -7,16 +7,19 @@ A cross-platform mobile repair companion for dirt-bike owners and mechanics.
 ## MVP
 
 - Home dashboard
-- Bike brand and model selection
+- Bike brand, model, and model-year selection
 - Model-family diagnostic profiles
+- Model-year data architecture with safe fallback to model-family data
 - Symptom-based diagnosis with branching decision trees
 - Diagnosis result screen
 - Interactive repair guide library
 - Expo/EAS build configuration
 
-## Model data
+## Model and year data
 
-The app now attaches a model-family profile to the selected bike, including engine type, likely fueling system, and diagnostic focus areas. Because dirt-bike specifications can change between model years, exact clearances, torque values, electrical tests, fuel pressure, and service limits are intentionally not hard-coded until verified against the exact year/model service documentation.
+The app now asks for the exact model year after the brand/model selection. It checks `app/src/data/model_year_profiles.json` first and falls back to `model_profiles.json` when an exact year profile has not been verified.
+
+The year database intentionally starts empty. Exact clearances, torque values, electrical tests, fuel pressure, service limits, and other specifications will only be added after verification against authoritative service documentation. The UI labels an exact verified profile separately from a model-family baseline so the app does not present guesses as factory specifications.
 
 ## Run locally
 
@@ -37,7 +40,7 @@ The repository includes `eas.json` with development, preview, and production pro
 
 1. Expand diagnostic decision trees. ✅
 2. Add model-family diagnostic profiles. ✅
-3. Add exact model/year selection and verified model-year service data.
+3. Add exact model/year selection and verified model-year service data. 🔄
 4. Add maintenance schedules and repair history.
 5. Add photo-based troubleshooting.
 6. Add offline guides.
