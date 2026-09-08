@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "description": "Exact model-year service data is stored here only after verification against authoritative documentation. Missing entries intentionally fall back to the model-family profile.",
+  "profiles": {}
+}
