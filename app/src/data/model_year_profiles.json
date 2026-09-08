@@ -1,5 +1,96 @@
 {
   "schemaVersion": 1,
-  "description": "Exact model-year service data is stored here only after verification against authoritative documentation. Missing entries intentionally fall back to the model-family profile.",
-  "profiles": {}
+  "description": "Exact model-year service data is stored here only after verification against authoritative manufacturer documentation. Missing entries intentionally fall back to the model-family profile.",
+  "profiles": {
+    "Honda|CRF250R|2021": {
+      "verified": true,
+      "source": {
+        "manufacturer": "Honda",
+        "document": "2021 CRF250R/RX Owner's Manual",
+        "url": "https://cdn.powersports.honda.com/documentum/MWOM/ml.remawmom.2021_31k95630_crf250r_rx.pdf"
+      },
+      "market": "US",
+      "engine": "249.43 cc liquid-cooled 4-stroke single",
+      "fueling": "Fuel-injected",
+      "specs": {
+        "boreStroke": "79.000 x 50.887 mm",
+        "compressionRatio": "13.9:1",
+        "valveClearanceCold": {
+          "intake": "0.09 ± 0.03 mm",
+          "exhaust": "0.19 ± 0.03 mm"
+        },
+        "oilCapacity": {
+          "drain": "1.08 L",
+          "drainAndFilter": "1.12 L",
+          "afterDisassembly": "1.35 L"
+        },
+        "idleSpeed": "2,000 ± 100 rpm",
+        "coolantCapacity": {
+          "drain": "0.94 L",
+          "afterDisassembly": "1.09 L"
+        }
+      },
+      "diagnosticFocus": [
+        "valve clearance",
+        "cam timing",
+        "fuel delivery",
+        "cooling system"
+      ]
+    },
+    "Yamaha|YZ125|2008": {
+      "verified": true,
+      "source": {
+        "manufacturer": "Yamaha Motor",
+        "document": "2008 Yamaha YZ Series technical specifications",
+        "url": "https://global.yamaha-motor.com/news/2007/0613/yz450f-yz250.html"
+      },
+      "market": "Japan",
+      "engine": "124 cc liquid-cooled 2-stroke single",
+      "fueling": "Carbureted (TMX 38 x1)",
+      "specs": {
+        "boreStroke": "54.0 x 54.5 mm",
+        "compressionRatio": "8.6–10.7:1",
+        "startingSystem": "Kick",
+        "transmission": "6-speed",
+        "fuelTank": "8.0 L",
+        "ignition": "CDI"
+      },
+      "diagnosticFocus": [
+        "spark plug",
+        "carburetor",
+        "reed/intake",
+        "top-end compression"
+      ]
+    },
+    "KTM|450 SX-F|2026": {
+      "verified": true,
+      "source": {
+        "manufacturer": "KTM",
+        "document": "2026 KTM 450 SX-F Technical Specifications",
+        "url": "https://www.ktm.com/en-nz/models/motocross/4-stroke/2026-ktm-450-sx-f/technical-specifications.html"
+      },
+      "market": "New Zealand",
+      "engine": "449.9 cc 4-stroke single",
+      "fueling": "Keihin EFI, 44 mm throttle body",
+      "specs": {
+        "transmission": "5-speed",
+        "clutch": "Wet DDS multi-disc, Brembo hydraulics",
+        "chain": "520 non-sealed",
+        "frontSuspension": "WP XACT-USD 48 mm",
+        "rearSuspension": "WP XACT Monoshock with linkage",
+        "frontTravel": "310 mm",
+        "rearTravel": "300 mm",
+        "seatHeight": "958 mm",
+        "groundClearance": "343 mm",
+        "fuelTank": "7.2 L",
+        "weightWithoutFuel": "102.6 kg"
+      },
+      "diagnosticFocus": [
+        "fuel injection",
+        "valve train",
+        "cooling system",
+        "cam timing"
+      ]
+    }
+  }
 }
