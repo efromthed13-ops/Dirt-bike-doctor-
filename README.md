@@ -7,12 +7,19 @@ A cross-platform mobile repair companion for dirt-bike owners and mechanics.
 ## MVP
 
 - Home dashboard
-- Bike brand and model selection
-- Symptom-based diagnosis
-- Working "Won't Start" diagnostic flow
+- Bike brand, model, and model-year selection
+- Model-family diagnostic profiles
+- Model-year data architecture with safe fallback to model-family data
+- Symptom-based diagnosis with branching decision trees
 - Diagnosis result screen
 - Interactive repair guide library
 - Expo/EAS build configuration
+
+## Model and year data
+
+The app now asks for the exact model year after the brand/model selection. It checks `app/src/data/model_year_profiles.json` first and falls back to `model_profiles.json` when an exact year profile has not been verified.
+
+The year database intentionally starts empty. Exact clearances, torque values, electrical tests, fuel pressure, service limits, and other specifications will only be added after verification against authoritative service documentation. The UI labels an exact verified profile separately from a model-family baseline so the app does not present guesses as factory specifications.
 
 ## Run locally
 
@@ -31,13 +38,14 @@ The repository includes `eas.json` with development, preview, and production pro
 
 ## Roadmap
 
-1. Expand diagnostic decision trees.
-2. Add exact model/year selection and model-specific service data.
-3. Add maintenance schedules and repair history.
-4. Add photo-based troubleshooting.
-5. Add offline guides.
-6. Add authenticated cloud garage storage.
-7. Add premium features and subscriptions.
-8. Prepare App Store and Google Play releases.
+1. Expand diagnostic decision trees. ✅
+2. Add model-family diagnostic profiles. ✅
+3. Add exact model/year selection and verified model-year service data. 🔄
+4. Add maintenance schedules and repair history.
+5. Add photo-based troubleshooting.
+6. Add offline guides.
+7. Add authenticated cloud garage storage.
+8. Add premium features and subscriptions.
+9. Prepare App Store and Google Play releases.
 
 Repair guidance, torque values, and service limits should be verified against the service manual for the user's exact year/model before performing a repair.
